@@ -16,6 +16,9 @@ if [ -z "$AUTH_PASSWORD" ]; then
   echo "opik-frontend: OPIK_AUTH_PASSWORD is empty; refusing to start an open Opik instance" >&2
   exit 1
 fi
+# worker_processes auto would start one worker per host CPU (dozens on Railway hosts).
+sed -i "s/^worker_processes .*/worker_processes ${NGINX_WORKER_PROCESSES:-2};/" /etc/nginx/nginx.conf
+
 printf '%s:{PLAIN}%s\n' "$AUTH_USER" "$AUTH_PASSWORD" > /tmp/opik.htpasswd
 UI_AUTH='auth_basic "Opik"; auth_basic_user_file /tmp/opik.htpasswd;'
 # The API accepts the same login (the browser sends it) or "Authorization: <password>",
