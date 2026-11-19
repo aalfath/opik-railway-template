@@ -7,7 +7,7 @@ ENV PORT=8080 \
     ANALYTICS_DB_PROTOCOL=HTTP \
     ANALYTICS_DB_PORT=8123 \
     ANALYTICS_DB_DATABASE_NAME=opik \
-    JAVA_OPTS="-Dliquibase.propertySubstitutionEnabled=true -XX:+UseG1GC -XX:MaxRAMPercentage=80.0" \
+    JAVA_OPTS="-Dliquibase.propertySubstitutionEnabled=true -XX:+UseG1GC -Xms256m -Xmx1g" \
     OPIK_USAGE_REPORT_ENABLED=false \
     OPIK_OTEL_SDK_ENABLED=false \
     IS_MINIO=true \
