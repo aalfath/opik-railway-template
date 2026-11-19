@@ -5,3 +5,4 @@ Each entry lists breaking changes first. Railway shows deployers an "update avai
 ## 2.2.151 (2026-11-19)
 
 - First release of the template: Opik 2.2.151 (frontend, backend, Python backend), ClickHouse 26.3.62.3, ZooKeeper 3.9.4, MinIO RELEASE.2025-10-15T17-29-55Z, with Railway MySQL and Redis.
+- README: Railway overview and the Deploy on Railway button (template code `opik-1`).

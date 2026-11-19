@@ -1,5 +1,7 @@
 # Deploy and Host Opik on Railway
 
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/new/template/opik-1?utm_medium=integration&utm_source=button&utm_campaign=opik)
+
 Opik is Comet's open-source platform (Apache-2.0) for debugging, evaluating and monitoring LLM applications, RAG systems and agents. It records traces and spans from your code, scores them with LLM-as-a-judge and heuristic metrics, runs experiments on datasets, and offers a prompt playground, prompt library and production dashboards.
 
 ## About Hosting Opik
