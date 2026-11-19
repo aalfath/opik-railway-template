@@ -1,0 +1,8 @@
+<clickhouse>
+    <!-- From upstream: Opik's migration 000030 needs the Time type on fresh installs. -->
+    <profiles>
+        <default>
+            <enable_time_time64_type>1</enable_time_time64_type>
+        </default>
+    </profiles>
+</clickhouse>

@@ -1,0 +1,16 @@
+<clickhouse>
+    <!-- From upstream deployment/docker-compose/clickhouse_config/additional_config.xml (Opik 2.2.151).
+         The ZooKeeper node and the cluster credentials are written at start by railway-start.sh. -->
+    <custom_settings_prefixes>SQL_</custom_settings_prefixes>
+    <timezone>UTC</timezone>
+    <macros>
+        <shard>1</shard>
+        <replica>clickhouse</replica>
+        <cluster>cluster</cluster>
+    </macros>
+    <zookeeper_path>/clickhouse</zookeeper_path>
+    <zookeeper_session_timeout_ms>30000</zookeeper_session_timeout_ms>
+    <distributed_ddl>
+        <path>/clickhouse/task_queue/ddl</path>
+    </distributed_ddl>
+</clickhouse>
