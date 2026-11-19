@@ -17,7 +17,9 @@ if [ -z "$AUTH_PASSWORD" ]; then
   exit 1
 fi
 # worker_processes auto would start one worker per host CPU (dozens on Railway hosts).
-sed -i "s/^worker_processes .*/worker_processes ${NGINX_WORKER_PROCESSES:-2};/" /etc/nginx/nginx.conf
+# /etc/nginx itself is root-owned, so rewrite nginx.conf in place rather than with sed -i.
+conf="$(sed "s/^worker_processes .*/worker_processes ${NGINX_WORKER_PROCESSES:-2};/" /etc/nginx/nginx.conf)"
+printf '%s\n' "$conf" > /etc/nginx/nginx.conf
 
 printf '%s:{PLAIN}%s\n' "$AUTH_USER" "$AUTH_PASSWORD" > /tmp/opik.htpasswd
 UI_AUTH='auth_basic "Opik"; auth_basic_user_file /tmp/opik.htpasswd;'
