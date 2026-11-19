@@ -5,6 +5,10 @@ set -eu
 : "${CLICKHOUSE_PASSWORD:?CLICKHOUSE_PASSWORD is required}"
 : "${ZOOKEEPER_HOST:?ZOOKEEPER_HOST is required}"
 ZOOKEEPER_PORT="${ZOOKEEPER_PORT:-2181}"
+# The cluster's only replica is this container, named by its own hostname (as upstream's compose names it
+# "clickhouse"). Not "localhost": ClickHouse lets only one server claim a loopback host id in ZooKeeper, so
+# after a redeploy the previous container's claim would block every ON CLUSTER migration.
+CLUSTER_HOST="${CLICKHOUSE_CLUSTER_HOST:-$(hostname)}"
 cat > /etc/clickhouse-server/config.d/opik-railway.xml <<XML
 <clickhouse>
     <http_port>${PORT:-8123}</http_port>
@@ -20,7 +24,7 @@ cat > /etc/clickhouse-server/config.d/opik-railway.xml <<XML
             <shard>
                 <internal_replication>true</internal_replication>
                 <replica>
-                    <host>localhost</host>
+                    <host>${CLUSTER_HOST}</host>
                     <port>9000</port>
                     <user>${CLICKHOUSE_USER}</user>
                     <password>${CLICKHOUSE_PASSWORD}</password>
@@ -30,5 +34,5 @@ cat > /etc/clickhouse-server/config.d/opik-railway.xml <<XML
     </remote_servers>
 </clickhouse>
 XML
-echo "clickhouse: ZooKeeper ${ZOOKEEPER_HOST}:${ZOOKEEPER_PORT}, HTTP port ${PORT:-8123}"
+echo "clickhouse: ZooKeeper ${ZOOKEEPER_HOST}:${ZOOKEEPER_PORT}, cluster host ${CLUSTER_HOST}, HTTP port ${PORT:-8123}"
 exec /entrypoint.sh
