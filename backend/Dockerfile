@@ -1,6 +1,12 @@
 # Opik backend (Java). Waits for MySQL, ClickHouse and Redis, runs both schema migrations, then starts.
 FROM ghcr.io/comet-ml/opik/opik-backend:2.2.151@sha256:6dc4328e508421d520a6c1f2fe1110b76df674886f086e368198f497eda0ae8c
 COPY --chmod=755 railway-start.sh /opt/opik/railway-start.sh
+# Railway's health check path can't contain a hyphen, so also serve the health check on /healthcheck.
+USER root
+RUN grep -q '^  healthCheckUrlPaths: \["/health-check"\]$' /opt/opik/config.yml \
+ && sed -i 's|^  healthCheckUrlPaths: \["/health-check"\]$|  healthCheckUrlPaths: ["/health-check", "/healthcheck"]|' /opt/opik/config.yml \
+ && grep -q '"/healthcheck"' /opt/opik/config.yml
+USER 1001:1001
 ENV PORT=8080 \
     STATE_DB_PROTOCOL=jdbc:mysql:// \
     STATE_DB_DATABASE_NAME=opik \
